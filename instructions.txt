@@ -1,0 +1,10 @@
+Create the thread (philo) and store the id
+prevent thread to take the same fork if a fork has been taken prevent with a mutex
+if fork unavailable -> wait for thread to finish else take the fork and eat
+store when a philo start eating
+check death : if a philo hasn't start to eat Xms since the beginning of his last meal -> death
+
+philo 1 will take his fork and the fork of NB_PHILO
+other will take his fork and the fork of cur_philo - 1
+
+?? loop until a philo died create thread
