@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/06 17:10:51 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/08 17:23:03 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ void	init_rules(t_rules *rules, int ac, char **av)
 	rules->t_death = ft_atol(av[2]);
 	rules->t_eat = ft_atol(av[3]);
 	rules->t_sleep = ft_atol(av[4]);
-	rules->philo = ft_atol(av[1]);
+	rules->n_philo = ft_atol(av[1]);
+	pthread_mutex_init(&rules->info, NULL);
 	if (ac == 6)
-		rules->philo = ft_atol(av[5]);
+		rules->nb_eat = ft_atol(av[5]);
 }
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
@@ -67,4 +68,16 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 		i++;
 	}
 	return (dest);
+}
+
+void	m_destroy(t_rules *rules)
+{
+	int	i;
+
+	i = -1;
+	pthread_mutex_destroy(&rules->info);
+	while (++i < rules->n_philo)
+	{
+		pthread_mutex_destroy(&rules->philo[i].l_shield);
+	}
 }
