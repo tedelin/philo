@@ -19,17 +19,12 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
-# define bool int
-# define true 1
-# define false 0
 
 typedef struct s_philo
 {
 	pthread_t		t_id;
-	pthread_mutex_t	l_shield;
-	pthread_mutex_t	*r_shield;
 	int				l_fork;
-	int				*r_fork;
+	int				r_fork;
 	int				id;
 	int				nb_eat;
 	long long		last_eat;
@@ -46,6 +41,7 @@ typedef struct s_rules
 	int				nb_eat;
 	int				current;
 	long long		start;
+	pthread_mutex_t	*forks;
 	t_philo			*philo;
 }					t_rules;
 
@@ -58,7 +54,8 @@ void				create_thread(t_rules *rules);
 long long			get_time(void);
 long long			ft_atol(const char *nptr);
 void				init_rules(t_rules *rules, int ac, char **av);
-void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				m_destroy(t_rules *rules);
+void				logs(t_philo *philo, char *message);
+int					ft_args(int ac, char **av);
 
 #endif

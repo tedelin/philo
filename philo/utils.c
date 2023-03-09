@@ -12,15 +12,24 @@
 
 #include "philo.h"
 
+void	logs(t_philo *philo, char *message)
+{
+	long long time;
+
+	time = get_time() - philo->rules->start;
+	pthread_mutex_lock(&philo->rules->info);
+	printf("%lld %d %s\n", time, philo->id, message);
+	pthread_mutex_unlock(&philo->rules->info);
+}
+
 long long get_time() 
 {
-	return (0);
-    // struct timeval current_time;
+    struct timeval current_time;
 	
-    // gettimeofday(&current_time, NULL);
-    // long long ms;
-	// ms = current_time.tv_sec * 1000LL + current_time.tv_usec / 1000LL;
-    // return (ms);
+    gettimeofday(&current_time, NULL);
+    long long ms;
+	ms = current_time.tv_sec * 1000LL + current_time.tv_usec / 1000LL;
+    return (ms);
 }
 
 long long	ft_atol(const char *nptr)
@@ -46,6 +55,9 @@ long long	ft_atol(const char *nptr)
 
 void	init_rules(t_rules *rules, int ac, char **av)
 {
+	int	i;
+
+	i = -1;
 	memset(rules, 0, sizeof(t_rules));
 	rules->start = get_time();
 	rules->t_death = ft_atol(av[2]);
@@ -53,21 +65,13 @@ void	init_rules(t_rules *rules, int ac, char **av)
 	rules->t_sleep = ft_atol(av[4]);
 	rules->n_philo = ft_atol(av[1]);
 	pthread_mutex_init(&rules->info, NULL);
+	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
+	if (!rules->forks)
+		return ; // add protection
+	while (++i < rules->n_philo)
+		pthread_mutex_init(&rules->forks[i], NULL);
 	if (ac == 6)
 		rules->nb_eat = ft_atol(av[5]);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		*(char *)(dest + i) = *(char *)(src + i);
-		i++;
-	}
-	return (dest);
 }
 
 void	m_destroy(t_rules *rules)
@@ -77,7 +81,24 @@ void	m_destroy(t_rules *rules)
 	i = -1;
 	pthread_mutex_destroy(&rules->info);
 	while (++i < rules->n_philo)
+		pthread_mutex_destroy(&rules->forks[i]);
+}
+
+int	ft_args(int ac, char **av)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	if (ac < 5 || ac > 6)
+		return (0);
+	while (i < ac)
 	{
-		pthread_mutex_destroy(&rules->philo[i].l_shield);
+		j = -1;
+		while (av[i][++j])
+			if (av[i][j] < '0' || av[i][j] > '9')
+				return (0);
+		i++;
 	}
+	return (1);
 }

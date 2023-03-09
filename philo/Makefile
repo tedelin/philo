@@ -12,9 +12,9 @@
 
 NAME = philo
 INCLUDE = -I.
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread
 CC = cc
-SRC = philo.c utils.c routine.c
+SRC = main.c utils.c routine.c
 OBJS = $(addprefix obj/, $(SRC:.c=.o))
 
 all: $(NAME)

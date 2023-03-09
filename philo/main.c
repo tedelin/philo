@@ -16,6 +16,8 @@ int	main(int ac, char **av)
 {
 	t_rules rules;
 
+	if (!ft_args(ac, av))
+		return (printf("Error ARGS\n"), 0);
 	if (ac < 5)
 		return(printf("Error expected at least 4 arguments\n"), 0);
 	init_rules(&rules, ac, av);

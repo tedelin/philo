@@ -15,27 +15,29 @@
 void	eat(t_rules *rules, t_philo *philo)
 {
 	if (philo->id == rules->n_philo)
-		pthread_mutex_lock(philo->r_shield);
+		pthread_mutex_lock(&rules->forks[philo->r_fork]);
 	else
-		pthread_mutex_lock(&philo->l_shield);
-	printf("%lld %d has taken a fork\n", get_time() - rules->start, philo->id);
+		pthread_mutex_lock(&rules->forks[philo->l_fork]);
+	logs(philo, "has taken a fork");
 	if (philo->id == rules->n_philo)
-		pthread_mutex_lock(&philo->l_shield);
+		pthread_mutex_lock(&rules->forks[philo->l_fork]);
 	else
-		pthread_mutex_lock(philo->r_shield);
-	printf("%lld %d has taken a fork\n", get_time() - rules->start, philo->id);
-	printf("%lld %d is eating\n", get_time() - rules->start, philo->id);
+		pthread_mutex_lock(&rules->forks[philo->r_fork]);
+	logs(philo, "has taken a fork");
+	logs(philo, "is eating");
+	philo->nb_eat++;
+	philo->last_eat = get_time();
 	usleep(rules->t_eat * 1000);
-	// if (philo->id == rules->n_philo)
-	// {
-	// 	pthread_mutex_unlock(philo->r_shield);
-	// 	pthread_mutex_unlock(&philo->l_shield);
-	// }
-	// else
-	// {
-	// 	pthread_mutex_unlock(&philo->l_shield);
-	// 	pthread_mutex_unlock(philo->r_shield);
-	// }
+	if (philo->id == rules->n_philo)
+	{
+		pthread_mutex_unlock(&rules->forks[philo->r_fork]);
+		pthread_mutex_unlock(&rules->forks[philo->l_fork]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&rules->forks[philo->l_fork]);
+		pthread_mutex_unlock(&rules->forks[philo->r_fork]);
+	}
 }
 
 void	init_philo(t_rules *rules)
@@ -44,24 +46,11 @@ void	init_philo(t_rules *rules)
 
 	i = -1;
 	while (++i < rules->n_philo)
-		pthread_mutex_init(&rules->philo[i].l_shield, NULL);
-	// pthread_mutex_lock(&rules->philo[0].l_shield);
-	i = -1;
-	while (++i < rules->n_philo)
 	{
 		rules->philo[i].id = i + 1;
-		if (i == rules->n_philo - 1)
-		{
-			rules->philo[i].r_shield = &(rules->philo[0].l_shield);
-			rules->philo[i].r_fork = &(rules->philo[0].l_fork);
-		}
-		else
-		{
-			rules->philo[i].r_shield = &(rules->philo[i + 1].l_shield);
-			rules->philo[i].r_fork = &(rules->philo[i + 1].l_fork);
-		}
-		rules->philo[i].rules = rules;	
-		// pthread_mutex_init(&rules->philo[i].l_shield, NULL);
+		rules->philo[i].rules = rules;
+		rules->philo[i].l_fork = i;
+		rules->philo[i].r_fork = (i + 1) % rules->n_philo;
 	}
 }
 
@@ -72,10 +61,11 @@ void	*ft_routine(void *args)
 
 	philo = *(t_philo *)args;
 	rules = philo.rules;
-	int	i = -1;
-	while (++i < 3)
+	while (1)
 	{
 		eat(rules, &philo);
+		if (rules->nb_eat != -1 && philo.nb_eat == rules->nb_eat)
+			break ;
 		usleep(200);
 	}
 	return (NULL);
@@ -86,16 +76,15 @@ void	create_thread(t_rules *rules)
 	int		i;
 
 	rules->philo = malloc(sizeof(t_philo) * rules->n_philo);
-	memset(rules->philo, 0, sizeof(t_philo) * rules->n_philo);
+	memset(rules->philo, 0, sizeof(t_philo) * rules->n_philo); // check behavior
 	init_philo(rules);
 	i = -1;
 	while (++i < rules->n_philo)
-	{
 		pthread_create(&rules->philo[i].t_id, NULL, ft_routine, &rules->philo[i]);
-	}
 	i = -1;
 	while (++i < rules->n_philo)
 		pthread_join(rules->philo[i].t_id, NULL);
 	m_destroy(rules);
 	free(rules->philo);
+	free(rules->forks);
 }
