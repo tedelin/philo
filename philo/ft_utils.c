@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/08 17:23:03 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/10 11:13:56 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 void	logs(t_philo *philo, char *message)
 {
-	long long time;
+	long long	time;
 
-	time = get_time() - philo->rules->start;
 	pthread_mutex_lock(&philo->rules->info);
+	time = get_time() - philo->rules->start;
 	printf("%lld %d %s\n", time, philo->id, message);
 	pthread_mutex_unlock(&philo->rules->info);
 }
 
-long long get_time() 
+long long	get_time(void)
 {
-    struct timeval current_time;
-	
-    gettimeofday(&current_time, NULL);
-    long long ms;
+	long long		ms;
+	struct timeval	current_time;
+
+	gettimeofday(&current_time, NULL);
 	ms = current_time.tv_sec * 1000LL + current_time.tv_usec / 1000LL;
-    return (ms);
+	return (ms);
 }
 
 long long	ft_atol(const char *nptr)
@@ -53,28 +53,7 @@ long long	ft_atol(const char *nptr)
 	return (res * sign);
 }
 
-void	init_rules(t_rules *rules, int ac, char **av)
-{
-	int	i;
-
-	i = -1;
-	memset(rules, 0, sizeof(t_rules));
-	rules->start = get_time();
-	rules->t_death = ft_atol(av[2]);
-	rules->t_eat = ft_atol(av[3]);
-	rules->t_sleep = ft_atol(av[4]);
-	rules->n_philo = ft_atol(av[1]);
-	pthread_mutex_init(&rules->info, NULL);
-	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
-	if (!rules->forks)
-		return ; // add protection
-	while (++i < rules->n_philo)
-		pthread_mutex_init(&rules->forks[i], NULL);
-	if (ac == 6)
-		rules->nb_eat = ft_atol(av[5]);
-}
-
-void	m_destroy(t_rules *rules)
+void	ft_free(t_rules *rules)
 {
 	int	i;
 
@@ -82,6 +61,8 @@ void	m_destroy(t_rules *rules)
 	pthread_mutex_destroy(&rules->info);
 	while (++i < rules->n_philo)
 		pthread_mutex_destroy(&rules->forks[i]);
+	free(rules->philo);
+	free(rules->forks);
 }
 
 int	ft_args(int ac, char **av)

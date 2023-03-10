@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   ft_routine.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:59:11 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/08 18:13:18 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/10 11:15:59 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eat(t_rules *rules, t_philo *philo)
+void	ft_eat(t_rules *rules, t_philo *philo)
 {
 	if (philo->id == rules->n_philo)
 		pthread_mutex_lock(&rules->forks[philo->r_fork]);
@@ -40,20 +40,6 @@ void	eat(t_rules *rules, t_philo *philo)
 	}
 }
 
-void	init_philo(t_rules *rules)
-{
-	int	i;
-
-	i = -1;
-	while (++i < rules->n_philo)
-	{
-		rules->philo[i].id = i + 1;
-		rules->philo[i].rules = rules;
-		rules->philo[i].l_fork = i;
-		rules->philo[i].r_fork = (i + 1) % rules->n_philo;
-	}
-}
-
 void	*ft_routine(void *args)
 {
 	t_philo	philo;
@@ -63,7 +49,7 @@ void	*ft_routine(void *args)
 	rules = philo.rules;
 	while (1)
 	{
-		eat(rules, &philo);
+		ft_eat(rules, &philo);
 		if (rules->nb_eat != -1 && philo.nb_eat == rules->nb_eat)
 			break ;
 		usleep(200);
@@ -84,7 +70,5 @@ void	create_thread(t_rules *rules)
 	i = -1;
 	while (++i < rules->n_philo)
 		pthread_join(rules->philo[i].t_id, NULL);
-	m_destroy(rules);
-	free(rules->philo);
-	free(rules->forks);
+	ft_free(rules);
 }
