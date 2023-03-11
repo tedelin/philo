@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/10 11:13:56 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/10 14:30:27 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	logs(t_philo *philo, char *message)
 {
 	long long	time;
 
+	time = get_time();
 	pthread_mutex_lock(&philo->rules->info);
-	time = get_time() - philo->rules->start;
-	printf("%lld %d %s\n", time, philo->id, message);
+	printf("%lld %d %s\n", time - philo->rules->start, philo->id, message);
 	pthread_mutex_unlock(&philo->rules->info);
 }
 
@@ -60,7 +60,12 @@ void	ft_free(t_rules *rules)
 	i = -1;
 	pthread_mutex_destroy(&rules->info);
 	while (++i < rules->n_philo)
+	{
 		pthread_mutex_destroy(&rules->forks[i]);
+		pthread_mutex_destroy(&rules->philo[i].n_eat);
+		pthread_mutex_destroy(&rules->philo[i].death);
+		pthread_mutex_destroy(&rules->philo[i].l_eat);
+	}
 	free(rules->philo);
 	free(rules->forks);
 }
