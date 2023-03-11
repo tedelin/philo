@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/10 14:30:27 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/11 15:29:51 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,32 @@
 
 void	logs(t_philo *philo, char *message)
 {
-	long long	time;
+	long	time;
 
+	pthread_mutex_lock(&philo->rules->death);
+	if (philo->rules->death_flag == 1 && strcmp(message, "died") != 0)
+	{
+		pthread_mutex_unlock(&philo->rules->death);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->rules->death);
 	time = get_time();
 	pthread_mutex_lock(&philo->rules->info);
-	printf("%lld %d %s\n", time - philo->rules->start, philo->id, message);
+	printf("%ld %d %s\n", time - philo->rules->start, philo->id, message);
 	pthread_mutex_unlock(&philo->rules->info);
 }
 
-long long	get_time(void)
+long	get_time(void)
 {
-	long long		ms;
-	struct timeval	current_time;
+	struct timeval	time;
 
-	gettimeofday(&current_time, NULL);
-	ms = current_time.tv_sec * 1000LL + current_time.tv_usec / 1000LL;
-	return (ms);
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-long long	ft_atol(const char *nptr)
+long	ft_atol(const char *nptr)
 {
-	long long	res;
+	long	res;
 	int			sign;
 
 	res = 0;
@@ -63,7 +68,6 @@ void	ft_free(t_rules *rules)
 	{
 		pthread_mutex_destroy(&rules->forks[i]);
 		pthread_mutex_destroy(&rules->philo[i].n_eat);
-		pthread_mutex_destroy(&rules->philo[i].death);
 		pthread_mutex_destroy(&rules->philo[i].l_eat);
 	}
 	free(rules->philo);

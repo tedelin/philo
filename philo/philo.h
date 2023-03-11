@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/10 15:17:44 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/11 15:30:00 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,27 @@ typedef struct s_philo
 {
 	pthread_t		t_id;
 	pthread_mutex_t	n_eat;
-	pthread_mutex_t	death;
 	pthread_mutex_t	l_eat;
 	int				l_fork;
 	int				r_fork;
 	int				id;
 	int				nb_eat;
-	long long		last_eat;
-	int				is_dead;
+	long			last_eat;
 	struct s_rules	*rules;
 }					t_philo;
 
 typedef struct s_rules
 {
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	info;
+	pthread_mutex_t	death;
+	int				death_flag;
 	int				n_philo;
 	long			t_death;
 	long			t_eat;
 	long			t_sleep;
 	int				nb_eat;
-	long long		start;
-	pthread_mutex_t	*forks;
+	long			start;
 	t_philo			*philo;
 }					t_rules;
 
@@ -62,11 +62,11 @@ int					check_meal(t_rules *rules);
 void				*ft_death(void *args);
 
 // Utils
-long long			get_time(void);
-long long			ft_atol(const char *nptr);
+long				get_time(void);
+long				ft_atol(const char *nptr);
 void				ft_free(t_rules *rules);
 void				logs(t_philo *philo, char *message);
 int					ft_args(int ac, char **av);
-void				ft_usleep(long long time);
+void				ft_usleep(long time);
 
 #endif

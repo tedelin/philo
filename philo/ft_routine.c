@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:59:11 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/11 13:34:44 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/11 16:38:52 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_eat(t_rules *rules, t_philo *philo)
 	philo->nb_eat++;
 	pthread_mutex_unlock(&philo->n_eat);
 	pthread_mutex_lock(&philo->l_eat);
-	philo->last_eat = get_time() - rules->start;
+	philo->last_eat = get_time();
 	pthread_mutex_unlock(&philo->l_eat);
 	ft_usleep(rules->t_eat);
 	if (philo->id == rules->n_philo)
@@ -57,6 +57,13 @@ void	*ft_routine(void *args)
 		logs(&philo, "is sleeping");
 		ft_usleep(rules->t_sleep);
 		logs(&philo, "is thinking");
+		pthread_mutex_lock(&rules->death);
+		if (rules->death_flag == 1)
+		{
+			pthread_mutex_unlock(&rules->death);
+			break ;
+		}
+		pthread_mutex_unlock(&rules->death);
 	}
 	return (NULL);
 }
