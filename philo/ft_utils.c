@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 16:19:50 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 20:10:07 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,26 @@ long long	ft_atol(const char *nptr)
 	return (res * sign);
 }
 
-void	ft_free(t_rules *rules)
+int	ft_free(t_rules *rules, char *msg)
 {
 	int	i;
 
 	i = -1;
 	pthread_mutex_destroy(&rules->logs);
 	pthread_mutex_destroy(&rules->death);
-	while (++i < rules->n_philo)
+	while (rules->forks && ++i < rules->n_philo)
 	{
 		pthread_mutex_destroy(&rules->forks[i]);
 		pthread_mutex_destroy(&rules->philo[i].eat_info);
 	}
 	free(rules->philo);
 	free(rules->forks);
+	if (msg)
+	{
+		printf("%s\n", msg);
+		return (1);
+	}
+	return (0);
 }
 
 int	ft_args(int ac, char **av)

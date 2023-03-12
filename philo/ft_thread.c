@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:59:11 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 16:21:01 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 20:02:41 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	*ft_death(void *args)
 		while (++i < rules->n_philo)
 			if (check_death(rules, i))
 				return (NULL);
-		usleep(1000);
+		ft_usleep(1);
 	}
 	return (NULL);
 }
@@ -99,12 +99,16 @@ void	ft_thread(t_rules *rules)
 
 	i = -1;
 	while (++i < rules->n_philo)
-		pthread_create(&rules->philo[i].t_id, NULL, ft_philo,
-			&rules->philo[i]);
-	pthread_create(&id_err, NULL, ft_death, rules);
+		if (pthread_create(&rules->philo[i].t_id, NULL, ft_philo,
+				&rules->philo[i]))
+			ft_free(rules, T_ERR);
+	if (pthread_create(&id_err, NULL, ft_death, rules))
+		ft_free(rules, T_ERR);
 	i = -1;
 	while (++i < rules->n_philo)
-		pthread_join(rules->philo[i].t_id, NULL);
-	pthread_join(id_err, NULL);
-	ft_free(rules);
+		if (pthread_join(rules->philo[i].t_id, NULL))
+			ft_free(rules, T_JOIN_ERR);
+	if (pthread_join(id_err, NULL))
+		ft_free(rules, T_JOIN_ERR);
+	ft_free(rules, NULL);
 }

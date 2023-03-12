@@ -6,12 +6,18 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 16:18:52 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 20:06:46 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+# define T_ERR "Error failed to create thread"
+# define T_JOIN_ERR "Error failed to join thread"
+# define M_ERR "Error failed to init mutex"
+# define PHILO_ERR "Error max philo is 200"
+# define MALLOC_ERR "Error malloc failed"
+# define ARGS_ERR "Error wrong arguments"
 
 # include <pthread.h>
 # include <stdio.h>
@@ -62,13 +68,13 @@ void				ft_eat(t_philo *philo);
 int					my_meal(t_philo *philo);
 
 // Init
-void				init_rules(t_rules *rules, int ac, char **av);
-void				init_philo(t_rules *rules);
+int					init_rules(t_rules *rules, int ac, char **av);
+int					init_philo(t_rules *rules);
 
 // Utils
 long long			get_time(void);
 long long			ft_atol(const char *nptr);
-void				ft_free(t_rules *rules);
+int				ft_free(t_rules *rules, char *msg);
 int					ft_args(int ac, char **av);
 void				ft_usleep(long time);
 
