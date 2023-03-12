@@ -6,28 +6,11 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/11 15:29:51 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 11:04:24 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	logs(t_philo *philo, char *message)
-{
-	long	time;
-
-	pthread_mutex_lock(&philo->rules->death);
-	if (philo->rules->death_flag == 1 && strcmp(message, "died") != 0)
-	{
-		pthread_mutex_unlock(&philo->rules->death);
-		return ;
-	}
-	pthread_mutex_unlock(&philo->rules->death);
-	time = get_time();
-	pthread_mutex_lock(&philo->rules->info);
-	printf("%ld %d %s\n", time - philo->rules->start, philo->id, message);
-	pthread_mutex_unlock(&philo->rules->info);
-}
 
 long	get_time(void)
 {
@@ -37,10 +20,19 @@ long	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
+void	ft_usleep(long time)
+{
+	long	start;
+
+	start = get_time();
+	while (get_time() - start < time)
+		usleep(100);
+}
+
 long	ft_atol(const char *nptr)
 {
 	long	res;
-	int			sign;
+	int		sign;
 
 	res = 0;
 	sign = 1;
