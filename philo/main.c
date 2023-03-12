@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 11:07:39 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 16:28:17 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,24 @@ void	init_rules(t_rules *rules, int ac, char **av)
 
 	i = -1;
 	memset(rules, 0, sizeof(t_rules));
+	rules->n_philo = ft_atol(av[1]);
 	rules->t_death = ft_atol(av[2]);
 	rules->t_eat = ft_atol(av[3]);
 	rules->t_sleep = ft_atol(av[4]);
-	rules->n_philo = ft_atol(av[1]);
-	pthread_mutex_init(&rules->info, NULL);
-	pthread_mutex_init(&rules->death, NULL);
+	rules->nb_eat = -1;
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
 	if (!rules->forks)
 		return ;
+	pthread_mutex_init(&rules->logs, NULL);
+	pthread_mutex_init(&rules->death, NULL);
 	while (++i < rules->n_philo)
 		pthread_mutex_init(&rules->forks[i], NULL);
 	if (ac == 6)
 		rules->nb_eat = ft_atol(av[5]);
-	else
-		rules->nb_eat = -1;
+	rules->philo = malloc(sizeof(t_philo) * rules->n_philo);
+	memset(rules->philo, 0, sizeof(t_philo) * rules->n_philo);
 	rules->start = get_time();
+	init_philo(rules);
 }
 
 void	init_philo(t_rules *rules)
@@ -48,8 +50,7 @@ void	init_philo(t_rules *rules)
 		rules->philo[i].l_fork = i;
 		rules->philo[i].last_eat = rules->start;
 		rules->philo[i].r_fork = (i + 1) % rules->n_philo;
-		pthread_mutex_init(&rules->philo[i].n_eat, NULL);
-		pthread_mutex_init(&rules->philo[i].l_eat, NULL);
+		pthread_mutex_init(&rules->philo[i].eat_info, NULL);
 	}
 }
 

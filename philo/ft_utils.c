@@ -6,13 +6,13 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 11:04:24 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 16:19:50 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time(void)
+long long	get_time(void)
 {
 	struct timeval	time;
 
@@ -29,10 +29,10 @@ void	ft_usleep(long time)
 		usleep(100);
 }
 
-long	ft_atol(const char *nptr)
+long long	ft_atol(const char *nptr)
 {
-	long	res;
-	int		sign;
+	long long	res;
+	int			sign;
 
 	res = 0;
 	sign = 1;
@@ -55,12 +55,12 @@ void	ft_free(t_rules *rules)
 	int	i;
 
 	i = -1;
-	pthread_mutex_destroy(&rules->info);
+	pthread_mutex_destroy(&rules->logs);
+	pthread_mutex_destroy(&rules->death);
 	while (++i < rules->n_philo)
 	{
 		pthread_mutex_destroy(&rules->forks[i]);
-		pthread_mutex_destroy(&rules->philo[i].n_eat);
-		pthread_mutex_destroy(&rules->philo[i].l_eat);
+		pthread_mutex_destroy(&rules->philo[i].eat_info);
 	}
 	free(rules->philo);
 	free(rules->forks);

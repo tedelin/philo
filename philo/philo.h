@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 11:07:19 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/12 16:18:52 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,27 @@
 typedef struct s_philo
 {
 	pthread_t		t_id;
-	pthread_mutex_t	n_eat;
-	pthread_mutex_t	l_eat;
+	pthread_mutex_t	eat_info;
 	int				l_fork;
 	int				r_fork;
 	int				id;
-	int				nb_eat;
-	long			last_eat;
+	long long		nb_eat;
+	long long		last_eat;
 	struct s_rules	*rules;
 }					t_philo;
 
 typedef struct s_rules
 {
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	info;
+	pthread_mutex_t	logs;
 	pthread_mutex_t	death;
 	int				death_flag;
 	int				n_philo;
-	long			t_death;
-	long			t_eat;
-	long			t_sleep;
-	int				nb_eat;
-	long			start;
+	long long		t_death;
+	long long		t_eat;
+	long long		t_sleep;
+	long long		nb_eat;
+	long long		start;
 	t_philo			*philo;
 }					t_rules;
 
@@ -56,18 +55,19 @@ void				*ft_death(void *args);
 void				ft_thread(t_rules *rules);
 
 // Actions
-void				logs(t_philo *philo, char *message);
-void				take_forks(t_rules *rules, t_philo *philo);
-void				release_forks(t_rules *rules, t_philo *philo);
-void				ft_eat(t_rules *rules, t_philo *philo);
+void				ft_logs(t_philo *philo, char *message);
+void				take_forks(t_philo *philo);
+void				release_forks(t_philo *philo);
+void				ft_eat(t_philo *philo);
+int					my_meal(t_philo *philo);
 
 // Init
 void				init_rules(t_rules *rules, int ac, char **av);
 void				init_philo(t_rules *rules);
 
 // Utils
-long				get_time(void);
-long				ft_atol(const char *nptr);
+long long			get_time(void);
+long long			ft_atol(const char *nptr);
 void				ft_free(t_rules *rules);
 int					ft_args(int ac, char **av);
 void				ft_usleep(long time);
