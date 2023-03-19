@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:27:10 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 22:47:48 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,27 @@ long long	ft_atol(const char *nptr)
 	return (res * sign);
 }
 
-int	ft_free(t_rules *rules, char *msg)
+int	ft_free(t_rules *rules, char *msg, int mutex)
 {
 	int	i;
 
 	i = -1;
-	pthread_mutex_destroy(&rules->logs);
-	pthread_mutex_destroy(&rules->death);
-	while (rules->forks && ++i < rules->n_philo)
+	if (mutex)
 	{
-		pthread_mutex_destroy(&rules->forks[i]);
-		pthread_mutex_destroy(&rules->philo[i].eat_info);
+		pthread_mutex_destroy(&rules->logs);
+		pthread_mutex_destroy(&rules->death);
+		while (rules->forks && ++i < rules->n_philo)
+		{
+			pthread_mutex_destroy(&rules->forks[i]);
+			pthread_mutex_destroy(&rules->philo[i].eat_info);
+		}
 	}
-	free(rules->philo);
-	free(rules->forks);
+	if (rules->forks)
+		free(rules->forks);
+	if (rules->philo)
+		free(rules->philo);
 	if (msg)
-	{
-		printf("%s\n", msg);
-		return (1);
-	}
+		return (printf("%s\n", msg), 1);
 	return (0);
 }
 
@@ -79,14 +81,14 @@ int	ft_args(int ac, char **av)
 
 	i = 1;
 	if (ac < 5 || ac > 6)
-		return (0);
+		return (1);
 	while (i < ac)
 	{
 		j = -1;
 		while (av[i][++j])
 			if (av[i][j] < '0' || av[i][j] > '9')
-				return (0);
+				return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }

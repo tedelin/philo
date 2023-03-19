@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:44:48 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 22:47:51 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef struct s_rules
 void				*ft_philo(void *args);
 int					check_meal(t_rules *rules);
 int					check_death(t_rules *rules, int i);
-void				*ft_death(void *args);
-int				ft_thread(t_rules *rules);
+void				ft_death(t_rules *rules);
+int					ft_thread(t_rules *rules);
 
 // Actions
 void				ft_logs(t_philo *philo, char *message);
@@ -70,11 +70,12 @@ int					my_meal(t_philo *philo);
 // Init
 int					init_rules(t_rules *rules, int ac, char **av);
 int					init_philo(t_rules *rules);
+int					init_mutex(t_rules *rules);
 
 // Utils
 long long			get_time(void);
 long long			ft_atol(const char *nptr);
-int					ft_free(t_rules *rules, char *msg);
+int					ft_free(t_rules *rules, char *msg, int mutex);
 int					ft_args(int ac, char **av);
 void				ft_usleep(long time);
 
