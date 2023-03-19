@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:27:15 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:39:54 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	init_philo(t_rules *rules)
 		rules->philo[i].last_eat = rules->start;
 		rules->philo[i].r_fork = (i + 1) % rules->n_philo;
 		if (pthread_mutex_init(&rules->philo[i].eat_info, NULL))
-			return (free(rules->forks), printf("%s\n", M_ERR), 1);
+			return (free(rules->forks), free(rules->philo), printf("%s\n", M_ERR), 1);
 	}
 	ft_thread(rules);
 	return (0);

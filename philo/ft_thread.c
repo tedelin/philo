@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:59:11 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:27:07 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:47:24 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	*ft_death(void *args)
 	return (NULL);
 }
 
-void	ft_thread(t_rules *rules)
+int	ft_thread(t_rules *rules)
 {
 	pthread_t	id_err;
 	int			i;
@@ -105,14 +105,14 @@ void	ft_thread(t_rules *rules)
 	while (++i < rules->n_philo)
 		if (pthread_create(&rules->philo[i].t_id, NULL, ft_philo,
 				&rules->philo[i]))
-			ft_free(rules, T_ERR);
+			return (ft_free(rules, T_ERR));
 	if (pthread_create(&id_err, NULL, ft_death, rules))
-		ft_free(rules, T_ERR);
+		return (ft_free(rules, T_ERR));
 	i = -1;
 	while (++i < rules->n_philo)
 		if (pthread_join(rules->philo[i].t_id, NULL))
-			ft_free(rules, T_JOIN_ERR);
+			return (ft_free(rules, T_JOIN_ERR));
 	if (pthread_join(id_err, NULL))
-		ft_free(rules, T_JOIN_ERR);
-	ft_free(rules, NULL);
+		return (ft_free(rules, T_JOIN_ERR));
+	return (ft_free(rules, NULL));
 }

@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:33:08 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:44:48 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void				*ft_philo(void *args);
 int					check_meal(t_rules *rules);
 int					check_death(t_rules *rules, int i);
 void				*ft_death(void *args);
-void				ft_thread(t_rules *rules);
+int				ft_thread(t_rules *rules);
 
 // Actions
 void				ft_logs(t_philo *philo, char *message);
