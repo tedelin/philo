@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:18:06 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:33:08 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 # define T_ERR "Error failed to create thread"
 # define T_JOIN_ERR "Error failed to join thread"
 # define M_ERR "Error failed to init mutex"
