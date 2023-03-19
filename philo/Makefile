@@ -6,7 +6,7 @@
 #    By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 16:02:08 by tedelin           #+#    #+#              #
-#    Updated: 2023/03/12 19:07:27 by tedelin          ###   ########.fr        #
+#    Updated: 2023/03/19 19:26:00 by tedelin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,15 +23,15 @@ $(NAME): $(OBJS) Makefile
 	$(CC) $(CFLAGS) $(INCLUDE) -o $(NAME) $(OBJS)
 
 obj/%.o: %.c
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c -o $@ $^
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $^
 
 clean:
-	@rm -rf $(OBJS)
-	@rm -rf obj
+	rm -rf $(OBJS)
+	rm -rf obj
 
 fclean: clean
-	@rm -rf $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 

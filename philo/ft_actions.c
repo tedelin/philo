@@ -6,11 +6,11 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 10:57:55 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 19:28:28 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:27:01 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philosophers.h"
 
 void	ft_logs(t_philo *philo, char *message)
 {

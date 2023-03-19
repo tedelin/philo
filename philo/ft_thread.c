@@ -6,17 +6,19 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:59:11 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 20:02:41 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:27:07 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philosophers.h"
 
 void	*ft_philo(void *args)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
+	if (philo->id % 2 == 0)
+		ft_usleep(philo->rules->t_eat / 10);
 	while (1)
 	{
 		ft_eat(philo);
@@ -32,6 +34,8 @@ void	*ft_philo(void *args)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->rules->death);
+		ft_usleep(((philo->rules->t_death - \
+		(philo->rules->t_eat + philo->rules->t_sleep)) / 2));
 	}
 	return (NULL);
 }

@@ -6,11 +6,11 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/12 20:16:01 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/19 19:27:15 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philosophers.h"
 
 int	init_rules(t_rules *rules, int ac, char **av)
 {
@@ -19,7 +19,7 @@ int	init_rules(t_rules *rules, int ac, char **av)
 	i = -1;
 	memset(rules, 0, sizeof(t_rules));
 	rules->n_philo = ft_atol(av[1]);
-	if (rules->n_philo > 200)
+	if (rules->n_philo > 200 || rules->n_philo <= 0)
 		return (printf("%s\n", PHILO_ERR), 1);
 	rules->t_death = ft_atol(av[2]);
 	rules->t_eat = ft_atol(av[3]);
