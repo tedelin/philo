@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/22 17:11:52 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/22 20:22:12 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	init_rules(t_rules *rules, int ac, char **av)
 {
 	memset(rules, 0, sizeof(t_rules));
 	rules->n_philo = ft_atol(av[1]);
+	if (rules->n_philo == 0)
+		return (1);
 	rules->t_death = ft_atol(av[2]);
 	rules->t_eat = ft_atol(av[3]);
 	rules->t_sleep = ft_atol(av[4]);
