@@ -6,18 +6,18 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 22:47:51 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/22 16:51:21 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 # define T_ERR "Error failed to create thread"
-# define T_JOIN_ERR "Error failed to join thread"
 # define M_ERR "Error failed to init mutex"
-# define PHILO_ERR "Error philo must be between 1 and 200"
+# define PHILO_ERR "Error philo must be > 0"
 # define MALLOC_ERR "Error malloc failed"
-# define ARGS_ERR "Error wrong arguments"
+# define ARGS_ERR "Please run like this : ./philo nb_philo t_die t_eat\
+ t_sleep [nb_time_must_eat]"
 
 # include <pthread.h>
 # include <stdio.h>
@@ -57,14 +57,14 @@ typedef struct s_rules
 void				*ft_philo(void *args);
 int					check_meal(t_rules *rules);
 int					check_death(t_rules *rules, int i);
-void				ft_death(t_rules *rules);
+void				*ft_death(void *args);
 int					ft_thread(t_rules *rules);
 
 // Actions
 void				ft_logs(t_philo *philo, char *message);
-void				take_forks(t_philo *philo);
+int					take_forks(t_philo *philo);
 void				release_forks(t_philo *philo);
-void				ft_eat(t_philo *philo);
+int					ft_eat(t_philo *philo);
 int					my_meal(t_philo *philo);
 
 // Init
@@ -75,7 +75,7 @@ int					init_mutex(t_rules *rules);
 // Utils
 long long			get_time(void);
 long long			ft_atol(const char *nptr);
-int					ft_free(t_rules *rules, char *msg, int mutex);
+int					ft_free(t_rules *rules, char *msg, int error, int index);
 int					ft_args(int ac, char **av);
 void				ft_usleep(long time);
 

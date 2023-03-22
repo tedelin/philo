@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 10:57:55 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 19:27:01 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/21 09:59:53 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,21 @@ void	ft_logs(t_philo *philo, char *message)
 	pthread_mutex_unlock(&philo->rules->death);
 }
 
-void	take_forks(t_philo *philo)
+int	take_forks(t_philo *philo)
 {
 	if (philo->id == philo->rules->n_philo)
 		pthread_mutex_lock(&philo->rules->forks[philo->r_fork]);
 	else
 		pthread_mutex_lock(&philo->rules->forks[philo->l_fork]);
 	ft_logs(philo, "has taken a fork");
+	if (philo->l_fork == philo->r_fork)
+		return (1);
 	if (philo->id == philo->rules->n_philo)
 		pthread_mutex_lock(&philo->rules->forks[philo->l_fork]);
 	else
 		pthread_mutex_lock(&philo->rules->forks[philo->r_fork]);
 	ft_logs(philo, "has taken a fork");
+	return (0);
 }
 
 void	release_forks(t_philo *philo)
@@ -57,9 +60,10 @@ void	release_forks(t_philo *philo)
 	}
 }
 
-void	ft_eat(t_philo *philo)
+int	ft_eat(t_philo *philo)
 {
-	take_forks(philo);
+	if (take_forks(philo))
+		return (1);
 	ft_logs(philo, "is eating");
 	pthread_mutex_lock(&philo->eat_info);
 	philo->last_eat = get_time();
@@ -67,6 +71,7 @@ void	ft_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->eat_info);
 	ft_usleep(philo->rules->t_eat);
 	release_forks(philo);
+	return (0);
 }
 
 int	my_meal(t_philo *philo)

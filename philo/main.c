@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/19 22:50:53 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/22 16:38:40 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	init_rules(t_rules *rules, int ac, char **av)
 {
 	memset(rules, 0, sizeof(t_rules));
 	rules->n_philo = ft_atol(av[1]);
-	if (rules->n_philo > 200 || rules->n_philo <= 0)
-		return (1);
 	rules->t_death = ft_atol(av[2]);
 	rules->t_eat = ft_atol(av[3]);
 	rules->t_sleep = ft_atol(av[4]);
@@ -27,7 +25,7 @@ int	init_rules(t_rules *rules, int ac, char **av)
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
 	rules->philo = malloc(sizeof(t_philo) * rules->n_philo);
 	if (!rules->forks || !rules->philo)
-		return (ft_free(rules, MALLOC_ERR, 0), 1);
+		return (ft_free(rules, MALLOC_ERR, 0, 0), 1);
 	memset(rules->philo, 0, sizeof(t_philo) * rules->n_philo);
 	if (init_mutex(rules))
 		return (1);
@@ -40,15 +38,17 @@ int	init_mutex(t_rules *rules)
 	int	i;
 
 	i = -1;
-	if (pthread_mutex_init(&rules->logs, NULL) || pthread_mutex_init(&rules->death, NULL))
-		return (ft_free(rules, M_ERR, 0), 1);
+	if (pthread_mutex_init(&rules->logs, NULL))
+		return (ft_free(rules, M_ERR, 0, 0), 1);
+	if (pthread_mutex_init(&rules->death, NULL))
+		return (ft_free(rules, M_ERR, 1, 0), 1);
 	while (++i < rules->n_philo)
-	{
 		if (pthread_mutex_init(&rules->forks[i], NULL))
-			return (ft_free(rules, M_ERR, 0), 1);
+			return (ft_free(rules, M_ERR, 3, i), 1);
+	i = -1;
+	while (++i < rules->n_philo)
 		if (pthread_mutex_init(&rules->philo[i].eat_info, NULL))
-			return (ft_free(rules, M_ERR, 0), 1);
-	}
+			return (ft_free(rules, M_ERR, 4, i), 1);
 	return (0);
 }
 
