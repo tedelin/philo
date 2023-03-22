@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 10:57:55 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/21 09:59:53 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/22 16:59:43 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ int	take_forks(t_philo *philo)
 		pthread_mutex_lock(&philo->rules->forks[philo->l_fork]);
 	ft_logs(philo, "has taken a fork");
 	if (philo->l_fork == philo->r_fork)
+	{
+		pthread_mutex_unlock(&philo->rules->forks[philo->r_fork]);
 		return (1);
+	}
 	if (philo->id == philo->rules->n_philo)
 		pthread_mutex_lock(&philo->rules->forks[philo->l_fork]);
 	else

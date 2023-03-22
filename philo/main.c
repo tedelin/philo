@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/22 16:38:40 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/22 17:11:52 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	init_rules(t_rules *rules, int ac, char **av)
 	rules->nb_eat = -1;
 	if (ac == 6)
 		rules->nb_eat = ft_atol(av[5]);
+	if (rules->nb_eat == 0)
+		return (1);
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
 	rules->philo = malloc(sizeof(t_philo) * rules->n_philo);
 	if (!rules->forks || !rules->philo)
