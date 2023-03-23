@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/22 16:51:21 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/23 08:46:57 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define M_ERR "Error failed to init mutex"
 # define PHILO_ERR "Error philo must be > 0"
 # define MALLOC_ERR "Error malloc failed"
-# define ARGS_ERR "Please run like this : ./philo nb_philo t_die t_eat\
- t_sleep [nb_time_must_eat]"
+# define ARGS_ERR "Run like this : ./philo nb_philo t_die t_eat \
+t_sleep [nb_time_must_eat]\nwith args > 0 for nb_philo and >= 0 for others args"
 
 # include <pthread.h>
 # include <stdio.h>
