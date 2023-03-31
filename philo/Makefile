@@ -6,13 +6,13 @@
 #    By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 16:02:08 by tedelin           #+#    #+#              #
-#    Updated: 2023/03/31 16:24:57 by tedelin          ###   ########.fr        #
+#    Updated: 2023/03/31 16:27:25 by tedelin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 INCLUDE = -I.
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 CC = cc
 SRC = ft_utils.c ft_thread.c ft_actions.c main.c 
 OBJS = $(addprefix obj/, $(SRC:.c=.o))
