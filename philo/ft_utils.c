@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/31 16:18:26 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:55:15 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_free(t_rules *rules, char *msg, int error, int index)
 	if (error > 0)
 		pthread_mutex_destroy(&rules->logs);
 	if (error > 1)
-		pthread_mutex_destroy(&rules->death);
+		pthread_mutex_destroy(&rules->flag);
 	while ((error > 2 && ++i < index) || (error > 3 && i < rules->n_philo))
 		pthread_mutex_destroy(&rules->forks[i]);
 	i = -1;

@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/31 16:17:39 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:55:15 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	init_mutex(t_rules *rules)
 	i = -1;
 	if (pthread_mutex_init(&rules->logs, NULL))
 		return (ft_free(rules, M_ERR, 0, 0), 1);
-	if (pthread_mutex_init(&rules->death, NULL))
+	if (pthread_mutex_init(&rules->flag, NULL))
 		return (ft_free(rules, M_ERR, 1, 0), 1);
 	while (++i < rules->n_philo)
 		if (pthread_mutex_init(&rules->forks[i], NULL))

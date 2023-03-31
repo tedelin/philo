@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/31 16:18:21 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:55:33 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_rules
 {
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	logs;
-	pthread_mutex_t	death;
-	int				death_flag;
+	pthread_mutex_t	flag;
+	int				stop_flag;
 	int				n_philo;
 	int				t_death;
 	int				t_eat;
@@ -65,7 +65,7 @@ void				ft_logs(t_philo *philo, char *message);
 int					take_forks(t_philo *philo);
 void				release_forks(t_philo *philo);
 int					ft_eat(t_philo *philo);
-int					my_meal(t_philo *philo);
+// int					my_meal(t_philo *philo);
 
 // Init
 int					ft_args(int ac, char **av);

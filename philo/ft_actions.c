@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 10:57:55 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/31 13:43:41 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:55:15 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ void	ft_logs(t_philo *philo, char *message)
 {
 	long long	time;
 
-	pthread_mutex_lock(&philo->rules->death);
-	if (philo->rules->death_flag == 1 && message && message [0] != 'd')
+	pthread_mutex_lock(&philo->rules->flag);
+	if (philo->rules->stop_flag == 1 && message && message[0] != 'd')
 	{
-		pthread_mutex_unlock(&philo->rules->death);
+		pthread_mutex_unlock(&philo->rules->flag);
 		return ;
 	}
 	time = get_time();
 	pthread_mutex_lock(&philo->rules->logs);
 	printf("%lld %d %s\n", time - philo->rules->start, philo->id, message);
 	pthread_mutex_unlock(&philo->rules->logs);
-	pthread_mutex_unlock(&philo->rules->death);
+	pthread_mutex_unlock(&philo->rules->flag);
 }
 
 int	take_forks(t_philo *philo)
@@ -74,19 +74,5 @@ int	ft_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->eat_info);
 	ft_usleep(philo->rules->t_eat);
 	release_forks(philo);
-	return (0);
-}
-
-int	my_meal(t_philo *philo)
-{
-	if (philo->rules->nb_eat == -1)
-		return (0);
-	pthread_mutex_lock(&philo->eat_info);
-	if (philo->nb_eat == philo->rules->nb_eat)
-	{
-		pthread_mutex_unlock(&philo->eat_info);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->eat_info);
 	return (0);
 }

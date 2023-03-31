@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:59:11 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/31 15:26:53 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:55:15 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ void	*ft_philo(void *args)
 		ft_usleep(philo->rules->t_eat / 10);
 	while (1)
 	{
-		if (ft_eat(philo) || my_meal(philo))
+		if (ft_eat(philo))
 			break ;
 		ft_logs(philo, "is sleeping");
 		ft_usleep(philo->rules->t_sleep);
 		ft_logs(philo, "is thinking");
-		pthread_mutex_lock(&philo->rules->death);
-		if (philo->rules->death_flag == 1)
+		pthread_mutex_lock(&philo->rules->flag);
+		if (philo->rules->stop_flag == 1)
 		{
-			pthread_mutex_unlock(&philo->rules->death);
+			pthread_mutex_unlock(&philo->rules->flag);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->rules->death);
+		pthread_mutex_unlock(&philo->rules->flag);
 		ft_usleep(((philo->rules->t_death - \
 		(philo->rules->t_eat + philo->rules->t_sleep)) / 2));
 	}
@@ -54,6 +54,9 @@ int	check_meal(t_rules *rules)
 		}
 		pthread_mutex_unlock(&rules->philo[i].eat_info);
 	}
+	pthread_mutex_lock(&rules->flag);
+	rules->stop_flag = 1;
+	pthread_mutex_unlock(&rules->flag);
 	return (1);
 }
 
@@ -66,9 +69,9 @@ int	check_death(t_rules *rules, int i)
 	if (time >= rules->t_death)
 	{
 		pthread_mutex_unlock(&rules->philo[i].eat_info);
-		pthread_mutex_lock(&rules->death);
-		rules->death_flag = 1;
-		pthread_mutex_unlock(&rules->death);
+		pthread_mutex_lock(&rules->flag);
+		rules->stop_flag = 1;
+		pthread_mutex_unlock(&rules->flag);
 		ft_logs(&rules->philo[i], "died");
 		return (1);
 	}
