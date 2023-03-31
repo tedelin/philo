@@ -6,11 +6,31 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:21 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/22 20:22:12 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:17:39 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+int	ft_args(int ac, char **av)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	if (ac < 5 || ac > 6)
+		return (1);
+	while (i < ac)
+	{
+		j = -1;
+		while (av[i][++j])
+			if (av[i][j] < '0' || av[i][j] > '9'
+				|| ft_atol(av[i]) > 2147483647 || ft_strlen(av[i]) > 10)
+				return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	init_rules(t_rules *rules, int ac, char **av)
 {

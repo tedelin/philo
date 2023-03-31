@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:26:43 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/23 08:34:36 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:18:26 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,25 +75,12 @@ int	ft_free(t_rules *rules, char *msg, int error, int index)
 	return (0);
 }
 
-int	ft_args(int ac, char **av)
+size_t	ft_strlen(const char *s)
 {
-	int	i;
-	int	j;
+	size_t	i;
 
-	i = 1;
-	if (ac < 5 || ac > 6)
-		return (1);
-	while (i < ac)
-	{
-		j = -1;
-		if (av[i] && av[i][++j] != '+' && (av[i][j] < '0' || av[i][j] > '9'))
-			return (1);
-		if (av[i] && av[i][j] == '+' && !av[i][j + 1])
-			return (1);
-		while (av[i][++j])
-			if (av[i][j] < '0' || av[i][j] > '9')
-				return (1);
+	i = 0;
+	while (s && s[i])
 		i++;
-	}
-	return (0);
+	return (i);
 }

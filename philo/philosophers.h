@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:02:28 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/23 08:46:57 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:18:21 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define PHILO_ERR "Error philo must be > 0"
 # define MALLOC_ERR "Error malloc failed"
 # define ARGS_ERR "Run like this : ./philo nb_philo t_die t_eat \
-t_sleep [nb_time_must_eat]\nwith args > 0 for nb_philo and >= 0 for others args"
+t_sleep [nb_time_must_eat]\nwith args > 0 and <= INT_MAX"
 
 # include <pthread.h>
 # include <stdio.h>
@@ -33,7 +33,7 @@ typedef struct s_philo
 	int				l_fork;
 	int				r_fork;
 	int				id;
-	long long		nb_eat;
+	int				nb_eat;
 	long long		last_eat;
 	struct s_rules	*rules;
 }					t_philo;
@@ -45,10 +45,10 @@ typedef struct s_rules
 	pthread_mutex_t	death;
 	int				death_flag;
 	int				n_philo;
-	long long		t_death;
-	long long		t_eat;
-	long long		t_sleep;
-	long long		nb_eat;
+	int				t_death;
+	int				t_eat;
+	int				t_sleep;
+	int				nb_eat;
 	long long		start;
 	t_philo			*philo;
 }					t_rules;
@@ -68,6 +68,7 @@ int					ft_eat(t_philo *philo);
 int					my_meal(t_philo *philo);
 
 // Init
+int					ft_args(int ac, char **av);
 int					init_rules(t_rules *rules, int ac, char **av);
 int					init_philo(t_rules *rules);
 int					init_mutex(t_rules *rules);
@@ -76,7 +77,7 @@ int					init_mutex(t_rules *rules);
 long long			get_time(void);
 long long			ft_atol(const char *nptr);
 int					ft_free(t_rules *rules, char *msg, int error, int index);
-int					ft_args(int ac, char **av);
 void				ft_usleep(long time);
+size_t				ft_strlen(const char *s);
 
 #endif

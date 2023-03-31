@@ -6,7 +6,7 @@
 /*   By: tedelin <tedelin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 10:57:55 by tedelin           #+#    #+#             */
-/*   Updated: 2023/03/22 16:59:43 by tedelin          ###   ########.fr       */
+/*   Updated: 2023/03/31 13:43:41 by tedelin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_logs(t_philo *philo, char *message)
 
 int	take_forks(t_philo *philo)
 {
-	if (philo->id == philo->rules->n_philo)
+	if (philo->id % 2 == 0)
 		pthread_mutex_lock(&philo->rules->forks[philo->r_fork]);
 	else
 		pthread_mutex_lock(&philo->rules->forks[philo->l_fork]);
@@ -41,7 +41,7 @@ int	take_forks(t_philo *philo)
 		pthread_mutex_unlock(&philo->rules->forks[philo->r_fork]);
 		return (1);
 	}
-	if (philo->id == philo->rules->n_philo)
+	if (philo->id % 2 == 0)
 		pthread_mutex_lock(&philo->rules->forks[philo->l_fork]);
 	else
 		pthread_mutex_lock(&philo->rules->forks[philo->r_fork]);
@@ -51,7 +51,7 @@ int	take_forks(t_philo *philo)
 
 void	release_forks(t_philo *philo)
 {
-	if (philo->id == philo->rules->n_philo)
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&philo->rules->forks[philo->r_fork]);
 		pthread_mutex_unlock(&philo->rules->forks[philo->l_fork]);
